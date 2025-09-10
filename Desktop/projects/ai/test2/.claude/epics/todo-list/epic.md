@@ -4,7 +4,7 @@ status: backlog
 created: 2025-09-10T03:20:14Z
 progress: 0%
 prd: .claude/prds/todo-list.md
-github: [Will be updated when synced to GitHub]
+github: https://github.com/ymxz375417299/todo-list-ai/issues/1
 ---
 
 # Epic: todo-list
@@ -161,14 +161,14 @@ Task: {
 - 预留15%时间进行用户体验调优
 
 ## Tasks Created
-- [ ] 001.md - 项目基础架构搭建 (parallel: true)
-- [ ] 002.md - 数据模型与存储层实现 (parallel: false)
-- [ ] 003.md - 核心任务CRUD功能 (parallel: false)
-- [ ] 004.md - 层级任务功能实现 (parallel: false)
-- [ ] 005.md - 用户界面设计与响应式布局 (parallel: true)
-- [ ] 006.md - 交互增强功能 (parallel: false)
-- [ ] 007.md - 数据管理与导入导出 (parallel: true)
-- [ ] 008.md - 性能优化与测试 (parallel: false)
+- [ ] #7 - 项目基础架构搭建 (parallel: true)
+- [ ] #8 - 数据模型与存储层实现 (parallel: false)  
+- [ ] #9 - 核心任务CRUD功能 (parallel: false)
+- [ ] #2 - 层级任务功能实现 (parallel: false)
+- [ ] #4 - 用户界面设计与响应式布局 (parallel: true)
+- [ ] #5 - 交互增强功能 (parallel: false)
+- [ ] #3 - 数据管理与导入导出 (parallel: true)
+- [ ] #6 - 性能优化与测试 (parallel: false)
 
 Total tasks: 8
 Parallel tasks: 3
