@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Epic Todo List - 现代化的待办事项管理应用">
+    <meta name="author" content="乔帅">
+    <title>Epic Todo List</title>
+    
+    <!-- 样式文件 -->
+    <link rel="stylesheet" href="./styles/main.css">
+    
+    <!-- 图标和主题 -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✅</text></svg>">
+    <meta name="theme-color" content="#2563eb">
+</head>
+<body>
+    <!-- 主容器 -->
+    <div class="app-container">
+        <!-- 应用头部 -->
+        <header class="app-header" role="banner">
+            <div class="header-content">
+                <h1 class="app-title">Epic Todo List</h1>
+                <p class="app-subtitle">让每个任务都值得完成</p>
+            </div>
+            
+            <!-- 统计信息 -->
+            <div class="stats-container" role="complementary" aria-label="任务统计">
+                <div class="stat-item">
+                    <span class="stat-number" id="totalTasks">0</span>
+                    <span class="stat-label">总任务</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="completedTasks">0</span>
+                    <span class="stat-label">已完成</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="remainingTasks">0</span>
+                    <span class="stat-label">待完成</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- 主要内容区域 -->
+        <main class="main-content" role="main">
+            <!-- 任务输入表单 -->
+            <section class="input-section" aria-labelledby="input-section-title">
+                <h2 id="input-section-title" class="visually-hidden">添加新任务</h2>
+                <form class="task-input-form" id="taskForm" role="form" aria-label="添加新任务">
+                    <div class="input-group">
+                        <label for="taskInput" class="visually-hidden">任务内容</label>
+                        <input 
+                            type="text" 
+                            id="taskInput" 
+                            class="task-input" 
+                            placeholder="添加一个新任务..."
+                            maxlength="200"
+                            required
+                            aria-describedby="task-input-hint"
+                        >
+                        <button type="submit" class="add-button" aria-label="添加任务">
+                            <span class="add-icon" aria-hidden="true">+</span>
+                            <span class="add-text">添加</span>
+                        </button>
+                    </div>
+                    <div id="task-input-hint" class="input-hint">按回车键或点击添加按钮来创建任务</div>
+                </form>
+            </section>
+
+            <!-- 过滤和搜索 -->
+            <section class="filter-section" aria-labelledby="filter-section-title">
+                <h2 id="filter-section-title" class="visually-hidden">任务筛选</h2>
+                <div class="filter-controls">
+                    <!-- 状态过滤 -->
+                    <div class="filter-tabs" role="tablist" aria-label="任务状态筛选">
+                        <button 
+                            class="filter-tab active" 
+                            data-filter="all" 
+                            role="tab" 
+                            aria-selected="true"
+                            aria-controls="task-list"
+                            id="tab-all"
+                        >
+                            全部
+                        </button>
+                        <button 
+                            class="filter-tab" 
+                            data-filter="active" 
+                            role="tab" 
+                            aria-selected="false"
+                            aria-controls="task-list"
+                            id="tab-active"
+                        >
+                            进行中
+                        </button>
+                        <button 
+                            class="filter-tab" 
+                            data-filter="completed" 
+                            role="tab" 
+                            aria-selected="false"
+                            aria-controls="task-list"
+                            id="tab-completed"
+                        >
+                            已完成
+                        </button>
+                    </div>
+
+                    <!-- 搜索框 -->
+                    <div class="search-container">
+                        <label for="searchInput" class="visually-hidden">搜索任务</label>
+                        <input 
+                            type="search" 
+                            id="searchInput" 
+                            class="search-input" 
+                            placeholder="搜索任务..."
+                            aria-label="搜索任务"
+                        >
+                        <span class="search-icon" aria-hidden="true">🔍</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 任务列表 -->
+            <section class="task-section" aria-labelledby="task-section-title">
+                <h2 id="task-section-title" class="visually-hidden">任务列表</h2>
+                
+                <!-- 批量操作 -->
+                <div class="bulk-actions" id="bulkActions" style="display: none;">
+                    <button class="bulk-action-btn" id="completeSelected" aria-label="完成选中的任务">
+                        <span aria-hidden="true">✓</span> 完成选中
+                    </button>
+                    <button class="bulk-action-btn" id="deleteSelected" aria-label="删除选中的任务">
+                        <span aria-hidden="true">🗑</span> 删除选中
+                    </button>
+                    <button class="bulk-action-btn" id="clearSelection" aria-label="取消选择">
+                        取消选择
+                    </button>
+                </div>
+
+                <!-- 任务列表容器 -->
+                <div 
+                    class="task-list-container"
+                    role="tabpanel"
+                    aria-labelledby="tab-all"
+                    id="task-list"
+                >
+                    <ul class="task-list" id="taskList" role="list" aria-label="任务列表">
+                        <!-- 任务项将通过JavaScript动态插入 -->
+                    </ul>
+                    
+                    <!-- 空状态 -->
+                    <div class="empty-state" id="emptyState" style="display: none;">
+                        <div class="empty-icon" aria-hidden="true">📝</div>
+                        <h3 class="empty-title">还没有任务</h3>
+                        <p class="empty-message">添加你的第一个任务来开始高效工作吧！</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- 底部操作栏 -->
+        <footer class="app-footer" role="contentinfo">
+            <div class="footer-actions">
+                <button class="footer-btn" id="clearCompleted" aria-label="清除已完成的任务">
+                    <span aria-hidden="true">🧹</span>
+                    <span>清除已完成</span>
+                </button>
+                <button class="footer-btn" id="exportData" aria-label="导出数据">
+                    <span aria-hidden="true">💾</span>
+                    <span>导出数据</span>
+                </button>
+                <button class="footer-btn" id="importData" aria-label="导入数据">
+                    <span aria-hidden="true">📂</span>
+                    <span>导入数据</span>
+                </button>
+            </div>
+            
+            <div class="footer-info">
+                <p class="copyright">&copy; 2024 Epic Todo List - 乔帅制作</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- 模态框容器 -->
+    <div class="modal-overlay" id="modalOverlay" aria-hidden="true">
+        <div class="modal" role="dialog" aria-labelledby="modal-title" aria-modal="true">
+            <div class="modal-header">
+                <h3 id="modal-title" class="modal-title"></h3>
+                <button class="modal-close" aria-label="关闭对话框">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- 模态框内容将通过JavaScript动态插入 -->
+            </div>
+            <div class="modal-footer" id="modalFooter">
+                <!-- 模态框按钮将通过JavaScript动态插入 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast 通知容器 -->
+    <div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="true">
+        <!-- Toast 消息将通过JavaScript动态插入 -->
+    </div>
+
+    <!-- JavaScript 模块 -->
+    <script type="module" src="./scripts/app.js"></script>
+</body>
+</html>
